@@ -135,6 +135,26 @@ def ellipseToCubic(cx, cy, rx, ry, x_axis_rotation=0):
 def circleToCubic(cx, cy, r):
     return ellipseToCubic(cx, cy, r, r)
 
+custom_path_operator = {
+    'Arc': {'allowed': ['PathObject'],
+            'to_cubic_function': arcEndpointToCubic,
+            'send_last_point_to_function': True,
+            'prepend_move_to': False},
+    'ArcCenter': {'allowed': ['PageDescriptionLevel', 'PathObject'],
+                  'to_cubic_function': arcCenterToCubic,
+                  'send_last_point_to_function': False,
+                  'prepend_move_to': True},
+    'Ellipse': {'allowed': ['PageDescriptionLevel', 'PathObject'],
+                'to_cubic_function': ellipseToCubic,
+                'send_last_point_to_function': False,
+                'prepend_move_to': True},
+    'Circle': {'allowed': ['PageDescriptionLevel', 'PathObject'],
+               'to_cubic_function': circleToCubic,
+               'send_last_point_to_function': False,
+               'prepend_move_to': True},
+}
+
+
 if __name__ == '__main__':
     #print(arcEndpointToCubic(100,0,0,100,100,100,large_arc=True,sweep=True))
     #print(arcEndpointToCubic(100,0,0,100,100,100,large_arc=False,sweep=True))

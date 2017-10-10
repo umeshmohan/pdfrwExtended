@@ -57,23 +57,23 @@ pdf_tm = PdfTM(a,b,c,d,e,f)'''
             self.tm = PDFTransformationMatrix(*tm)
     def translate(self, tx, ty):
         translate_matrix = PdfTM(*newTM(e=tx, f=ty))
-        self.tm = (translate_matrix * self).tm
+        self.tm = (self * translate_matrix).tm
         return self
     def scale(self, sx, sy):
         scale_matrix = PdfTM(*newTM(a=sx, d=sy))
-        self.tm = (scale_matrix * self).tm
+        self.tm = (self * scale_matrix).tm
         return self
     def rotate(self, theta, x0=0, y0=0):
         self.translate(x0, y0)
         rotate_matrix = PdfTM(*newTM(a=cos(theta), b=sin(theta), \
                                    c=-sin(theta), d=cos(theta)))
-        self.tm = (rotate_matrix * self).tm
+        self.tm = (self * rotate_matrix).tm
         self.translate(-x0, -y0)
         return self
     def skew(self, alpha, beta):
         '''Skew x axis by alpha and y axis by beta'''
         skew_matrix - PdfTM(*newTM(b=tan(alpha), c=tan(beta)))
-        self.tm = (skew_matrix * self).tm
+        self.tm = (self * skew_matrix).tm
         return self
     def __repr__(self):
         return self.__str__()

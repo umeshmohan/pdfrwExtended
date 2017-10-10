@@ -5,7 +5,9 @@
 from ._misc import raiseValueError, raiseNotImplementedError,\
                   isWithinLimits
 from .arc2cubic import arcCenterToCubic, arcEndpointToCubic, \
-                      ellipseToCubic, circleToCubic
+                      ellipseToCubic, circleToCubic, custom_path_operator
+import math
+
 
 def _setColorNamedToString(x):
     if type(x[-1]) is str:
@@ -47,7 +49,8 @@ pdf_operator_state = {
                    special_graphics_state_operators +
                    color_operators +
                    text_state_operators +
-                   marked_content_operators
+                   marked_content_operators +
+                   xobjects_operators
     },
     'TextObject': {
         'start': ['BT'],
@@ -235,26 +238,6 @@ pdf_operator = {
     'EX' : lambda : 'EX'
 }
 
-custom_path_operator = {
-    'Arc': {'allowed': ['PathObject'],
-            'to_cubic_function': arcEndpointToCubic,
-            'send_last_point_to_function': True,
-            'prepend_move_to': False},
-    'ArcCenter': {'allowed': ['PageDescriptionLevel', 'PathObject'],
-                  'to_cubic_function': arcCenterToCubic,
-                  'send_last_point_to_function': False,
-                  'prepend_move_to': True},
-    'Ellipse': {'allowed': ['PageDescriptionLevel', 'PathObject'],
-                'to_cubic_function': ellipseToCubic,
-                'send_last_point_to_function': False,
-                'prepend_move_to': True},
-    'Circle': {'allowed': ['PageDescriptionLevel', 'PathObject'],
-               'to_cubic_function': circleToCubic,
-               'send_last_point_to_function': False,
-               'prepend_move_to': True},
-}
-
-
 class PdfStream:
 
     def __init__(self):
@@ -322,4 +305,26 @@ Circle: cx, cy, r'''
         return self.commands.__repr__()
 
     def __str__(self):
+        #return '\n'.join([' '.join([nums.strip('0') for nums in contentlet.split(' ')]) for contentlet in self.content])
+        #return_string = '\n'.join(self.content)
         return '\n'.join(self.content)
+
+    def append_multiple_operations(self, operations):
+        assert (type(operations) is list)
+        for stream_command in operations:
+            if type(stream_command) is str:
+                stream_command = (stream_command, [])
+            elif type(stream_command) is tuple:
+                if len(stream_command) == 1:
+                    stream_command = (stream_command[0], [])
+                if len(stream_command) > 2:
+                    stream_command = (stream_command[0], [*stream_command[1:]])
+                if type(stream_command[1]) is not list:
+                    stream_command = (stream_command[0], [stream_command[1]])
+            operation_type, operation_parameters = stream_command
+            if type(operation_parameters) is not list:
+                operation_parameters = [operation_parameters]
+            if operation_type in custom_path_operator:  # ['Arc', 'ArcCenter', 'Ellipse', 'Circle']:
+                self.appendCustomPath(operation_type, *operation_parameters)
+            else:
+                self.append(operation_type, *operation_parameters)
