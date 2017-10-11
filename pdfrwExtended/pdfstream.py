@@ -152,7 +152,7 @@ pdf_operator = {
     'Tw' : lambda word_space: '{:.4f} Tw'.format(word_space),
     'Tz' : lambda scale: '{:.4f} Tz'.format(scale),
     'TL' : lambda leading: '{:.4f} TL'.format(leading),
-    'Tf' : lambda font_size: '{:.4f} Tf'.format(font_size),
+    'Tf' : lambda font_name, font_size: font_name + ' {:.4f} Tf'.format(font_size),
     'Tr' : lambda text_rendering_mode: '{:d} Tr'.format(text_rendering_mode) \
                                        if text_rendering_mode in range(8) else\
                                        raiseValueError('"text rendering mode"',
