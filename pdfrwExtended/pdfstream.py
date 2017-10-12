@@ -165,7 +165,7 @@ pdf_operator = {
                 (('{:.4f} ' * 6) + 'Tm').format(a, b, c, d, e, f),
     'T*' : lambda : 'T*',
     # Text showing
-    'Tj' : lambda string_: string_ + ' Tj',
+    'Tj' : lambda string_: '(' + string_ + ') Tj',
     'TJ' : lambda array_: '[' + ' '.join(['(' + i + ')' if type(i) is str else\
                           '{:.2f}'.format(i) for i in array_]) + '] TJ',
     "'"  : lambda string_: string_ + ' \'',
