@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Author: Umesh Mohan (umesh@heterorrhina.in)
+# Author: Umesh Mohan (moh@nume.sh)
 
 from pdfrw import *
 

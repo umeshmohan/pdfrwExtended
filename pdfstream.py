@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Author: Umesh Mohan (umesh@heterorrhina.in)
+# Author: Umesh Mohan (moh@nume.sh)
 # From PDF 1.7 file format specification
 
 from ._misc import raiseValueError, raiseNotImplementedError,\

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Author: Umesh Mohan (umesh@heterorrhina.in)
+# Author: Umesh Mohan (moh@nume.sh)
 
 # From: https://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes 
 # (F.6.4 - F.6.6) and the paper "Approximation of a cubic bezier curve by
